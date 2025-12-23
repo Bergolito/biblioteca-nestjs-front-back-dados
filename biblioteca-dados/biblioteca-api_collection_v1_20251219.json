@@ -1,0 +1,423 @@
+{
+	"info": {
+		"_postman_id": "eeef40ea-e23c-4a23-b702-12f1ab5029ed",
+		"name": "biblioteca-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "8724395"
+	},
+	"item": [
+		{
+			"name": "livros",
+			"item": [
+				{
+					"name": "livros-listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/livros"
+					},
+					"response": []
+				},
+				{
+					"name": "livros-detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/livros/1"
+					},
+					"response": []
+				},
+				{
+					"name": "livros-adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"titulo\": \"Novo livro 01\",\n  \"subtitulo\": \"subtitulo do Novo livro 01\",\n  \"edicao\": 1,\n  \"num_paginas\": 150,\n  \"ano\": 2024,\n  \"autor_id\": 1,\n  \"editora_id\": 1,\n  \"idioma_id\": 1,\n  \"imagem_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/livros"
+					},
+					"response": []
+				},
+				{
+					"name": "livros-atualizar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/livros"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "autores",
+			"item": [
+				{
+					"name": "autores-adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\":\"Bergson Barros\",\n    \"nacionalidade\":\"Brasil\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/autores"
+					},
+					"response": []
+				},
+				{
+					"name": "autores-atualizar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\":\"Bergson Brito Barros\",\n    \"nacionalidade\":\"Braxil\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/autores/173"
+					},
+					"response": []
+				},
+				{
+					"name": "autores-listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/autores"
+					},
+					"response": []
+				},
+				{
+					"name": "autores-detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/autores/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "categorias",
+			"item": [
+				{
+					"name": "categorias-adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\":\"Bíblia\",\n    \"descricao\":\"Bíblia\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/categorias"
+					},
+					"response": []
+				},
+				{
+					"name": "categorias-atualizar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"nome\": \"Geografia\",\n        \"descricao\": \"Geografia 123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/categorias/2"
+					},
+					"response": []
+				},
+				{
+					"name": "categorias-listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/categorias"
+					},
+					"response": []
+				},
+				{
+					"name": "categorias-detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/categorias/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "categorias-livro",
+			"item": [
+				{
+					"name": "categorias-livro-adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"livro_id\":1,\n    \"categoria_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/categorias-livro"
+					},
+					"response": []
+				},
+				{
+					"name": "categorias-livro-atualizar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"livro_id\": 1,\n    \"categoria_id\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/categorias-livro/1"
+					},
+					"response": []
+				},
+				{
+					"name": "categorias-livro-listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/categorias-livro"
+					},
+					"response": []
+				},
+				{
+					"name": "categorias-livro-detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/categorias-livro/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "editoras",
+			"item": [
+				{
+					"name": "editoras-listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/editoras"
+					},
+					"response": []
+				},
+				{
+					"name": "editoras-adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\":\"Nova Editora 01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/editoras"
+					},
+					"response": []
+				},
+				{
+					"name": "editoras-atualizar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\":\"Nova Editora 1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/editoras/132"
+					},
+					"response": []
+				},
+				{
+					"name": "editoras-detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/editoras/132"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "idiomas",
+			"item": [
+				{
+					"name": "idiomas-listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/idiomas"
+					},
+					"response": []
+				},
+				{
+					"name": "idiomas-detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/idiomas/2"
+					},
+					"response": []
+				},
+				{
+					"name": "idiomas-adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\":\"KOR\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/idiomas"
+					},
+					"response": []
+				},
+				{
+					"name": "idiomas-atualizar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\":\"RUSSIA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/idiomas/10"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "imagens",
+			"item": [
+				{
+					"name": "imagens-livro-listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/imagens-livro"
+					},
+					"response": []
+				},
+				{
+					"name": "imagens-livro-detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/imagens-livro/1"
+					},
+					"response": []
+				},
+				{
+					"name": "imagens-livro-adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"descricao\":\"imagem de teste\",\n    \"arquivo\":\"imagem de teste\"      \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/imagens-livro"
+					},
+					"response": []
+				},
+				{
+					"name": "imagens-livro-atualizar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"descricao\":\"Nova imagem de teste\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/imagens-livro/1"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

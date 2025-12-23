@@ -1,0 +1,9 @@
+INSERT INTO idiomas (id, codigo, descricao) VALUES (1, 'POR', 'POR');
+INSERT INTO idiomas (id, codigo, descricao) VALUES (2, 'ING', 'ING');
+INSERT INTO idiomas (id, codigo, descricao) VALUES (3, 'ESP', 'ESP');
+INSERT INTO idiomas (id, codigo, descricao) VALUES (4, 'ING/HOL', 'ING/HOL');
+INSERT INTO idiomas (id, codigo, descricao) VALUES (5, 'POR/ESP', 'POR/ESP');
+INSERT INTO idiomas (id, codigo, descricao) VALUES (6, 'POR/ALE', 'POR/ALE');
+INSERT INTO idiomas (id, codigo, descricao) VALUES (7, 'POR/ESP_ING', 'POR/ESP_ING');
+INSERT INTO idiomas (id, codigo, descricao) VALUES (8, 'ING/POR', 'ING/POR');
+INSERT INTO idiomas (id, codigo, descricao) VALUES (9, 'POR/ING', 'POR/ING');
