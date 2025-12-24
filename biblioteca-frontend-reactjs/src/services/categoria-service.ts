@@ -2,6 +2,7 @@ import api from './api';
 import { Categoria, CategoriaFilters } from '../types/categoria';
 
 export const categoriaService = {
+    
   getAll: async (filters?: CategoriaFilters): Promise<Categoria[]> => {
     const params = new URLSearchParams();
     if (filters?.nome) params.append('nome', filters.nome);

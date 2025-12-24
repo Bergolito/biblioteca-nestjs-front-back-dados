@@ -18,7 +18,12 @@ export class AutorService {
   }
 
   async findAll(): Promise<Autor[]> {
-    return await this.autorRepository.find({ relations: ['livros'] });
+    return await this.autorRepository.find({ 
+      relations: ['livros'] ,
+      order: {
+        nome: 'ASC',
+      },
+    })
   }
 
   async findOne(id: number): Promise<Autor> {

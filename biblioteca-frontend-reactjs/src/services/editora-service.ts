@@ -2,6 +2,7 @@ import api from './api';
 import { Editora, EditoraFilters } from '../types/editora';
 
 export const editoraService = {
+    
   getAll: async (filters?: EditoraFilters): Promise<Editora[]> => {
     const params = new URLSearchParams();
     if (filters?.nome) params.append('nome', filters.nome);

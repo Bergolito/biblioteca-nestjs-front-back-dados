@@ -6,7 +6,6 @@ import {
   TextField,
   Button,
   Typography,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -17,23 +16,23 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { autorService } from '../services/autorService';
-import { Autor, AutorFilters } from '../types/autor';
+import { idiomaService } from '../services/idioma-service';
+import { Idioma, IdiomaFilters } from '../types/idioma';
 
-const AutoresPage: React.FC = () => {
-  const [autores, setAutores] = useState<Autor[]>([]);
+const IdiomasPage: React.FC = () => {
+  const [idiomas, setIdiomas] = useState<Idioma[]>([]);
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState<AutorFilters>({});
+  const [filters, setFilters] = useState<IdiomaFilters>({});
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogMode, setDialogMode] = useState<'view' | 'edit' | 'create'>('view');
-  const [selectedAutor, setSelectedAutor] = useState<Autor | null>(null);
-  const [formData, setFormData] = useState<Partial<Autor>>({});
+  const [selectedIdioma, setSelectedIdioma] = useState<Idioma | null>(null);
+  const [formData, setFormData] = useState<Partial<Idioma>>({});
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'nome', headerName: 'Nome', flex: 1, minWidth: 200 },
-    { field: 'nacionalidade', headerName: 'Nacionalidade', flex: 1, minWidth: 150 },
+    { field: 'codigo', headerName: 'Código', flex: 1, minWidth: 150 },
+    { field: 'descricao', headerName: 'Descrição', flex: 2, minWidth: 300 },
     {
       field: 'actions',
       type: 'actions',
@@ -60,69 +59,68 @@ const AutoresPage: React.FC = () => {
   ];
 
   useEffect(() => {
-    loadAutores();
+    loadIdiomas();
   }, []);
 
-  const loadAutores = async (searchFilters?: AutorFilters) => {
+  const loadIdiomas = async (searchFilters?: IdiomaFilters) => {
     setLoading(true);
     try {
-      const data = await autorService.getAll(searchFilters);
-      // Valida se os dados retornados são um array e têm IDs válidos
+      const data = await idiomaService.getAll(searchFilters);
       if (Array.isArray(data)) {
         const validData = data.filter(item => item && typeof item.id !== 'undefined');
-        setAutores(validData);
+        setIdiomas(validData);
       } else {
         console.error('Dados inválidos recebidos da API:', data);
-        setAutores([]);
+        setIdiomas([]);
         showSnackbar('Formato de dados inválido recebido da API', 'error');
       }
     } catch (error) {
-      console.error('Erro ao carregar autores:', error);
-      setAutores([]);
-      showSnackbar('Erro ao carregar autores', 'error');
+      console.error('Erro ao carregar idiomas:', error);
+      setIdiomas([]);
+      showSnackbar('Erro ao carregar idiomas', 'error');
     } finally {
       setLoading(false);
     }
   };
 
   const handleSearch = () => {
-    loadAutores(filters);
+    loadIdiomas(filters);
   };
 
   const handleClear = () => {
     setFilters({});
-    loadAutores();
+    loadIdiomas();
   };
 
-  const handleView = (autor: Autor) => {
-    setSelectedAutor(autor);
-    setFormData(autor);
+  const handleView = (idioma: Idioma) => {
+    setSelectedIdioma(idioma);
+    setFormData(idioma);
     setDialogMode('view');
     setOpenDialog(true);
   };
 
-  const handleEdit = (autor: Autor) => {
-    setSelectedAutor(autor);
-    setFormData(autor);
+  const handleEdit = (idioma: Idioma) => {
+    setSelectedIdioma(idioma);
+    setFormData(idioma);
     setDialogMode('edit');
     setOpenDialog(true);
   };
 
   const handleCreate = () => {
-    setSelectedAutor(null);
+    setSelectedIdioma(null);
     setFormData({});
     setDialogMode('create');
     setOpenDialog(true);
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Tem certeza que deseja excluir este autor?')) {
+    if (window.confirm('Tem certeza que deseja excluir este idioma?')) {
       try {
-        await autorService.delete(id);
-        showSnackbar('Autor excluído com sucesso', 'success');
-        loadAutores(filters);
+        await idiomaService.delete(id);
+        showSnackbar('Idioma excluído com sucesso', 'success');
+        loadIdiomas(filters);
       } catch (error) {
-        showSnackbar('Erro ao excluir autor', 'error');
+        showSnackbar('Erro ao excluir idioma', 'error');
       }
     }
   };
@@ -130,16 +128,16 @@ const AutoresPage: React.FC = () => {
   const handleSave = async () => {
     try {
       if (dialogMode === 'create') {
-        await autorService.create(formData as Omit<Autor, 'id'>);
-        showSnackbar('Autor criado com sucesso', 'success');
-      } else if (dialogMode === 'edit' && selectedAutor) {
-        await autorService.update(selectedAutor.id, formData);
-        showSnackbar('Autor atualizado com sucesso', 'success');
+        await idiomaService.create(formData as Omit<Idioma, 'id'>);
+        showSnackbar('Idioma criado com sucesso', 'success');
+      } else if (dialogMode === 'edit' && selectedIdioma) {
+        await idiomaService.update(selectedIdioma.id, formData);
+        showSnackbar('Idioma atualizado com sucesso', 'success');
       }
       setOpenDialog(false);
-      loadAutores(filters);
+      loadIdiomas(filters);
     } catch (error) {
-      showSnackbar('Erro ao salvar autor', 'error');
+      showSnackbar('Erro ao salvar idioma', 'error');
     }
   };
 
@@ -150,7 +148,7 @@ const AutoresPage: React.FC = () => {
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Autores
+        Idiomas
       </Typography>
 
       {/* Filtros */}
@@ -162,17 +160,17 @@ const AutoresPage: React.FC = () => {
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
-              label="Nome"
-              value={filters.nome || ''}
-              onChange={(e) => setFilters({ ...filters, nome: e.target.value })}
+              label="Código"
+              value={filters.codigo || ''}
+              onChange={(e) => setFilters({ ...filters, codigo: e.target.value })}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
-              label="Nacionalidade"
-              value={filters.nacionalidade || ''}
-              onChange={(e) => setFilters({ ...filters, nacionalidade: e.target.value })}
+              label="Descrição"
+              value={filters.descricao || ''}
+              onChange={(e) => setFilters({ ...filters, descricao: e.target.value })}
             />
           </Grid>
           <Grid item xs={12}>
@@ -184,7 +182,7 @@ const AutoresPage: React.FC = () => {
                 Limpar
               </Button>
               <Button variant="contained" color="success" onClick={handleCreate}>
-                Novo Autor
+                Novo Idioma
               </Button>
             </Box>
           </Grid>
@@ -194,38 +192,40 @@ const AutoresPage: React.FC = () => {
       {/* Grid */}
       <Paper sx={{ p: 2, height: 500 }}>
         <DataGrid
-          rows={autores}
+          rows={idiomas}
           columns={columns}
           loading={loading}
           pageSizeOptions={[5, 10, 25, 50]}
           initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
+            pagination: { paginationModel: { pageSize: 25 } },
           }}
-        >
-        </DataGrid>
+        />
       </Paper>
 
       {/* Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>
-          {dialogMode === 'view' ? 'Detalhes do Autor' : dialogMode === 'edit' ? 'Editar Autor' : 'Novo Autor'}
+          {dialogMode === 'view' ? 'Detalhes do Idioma' : dialogMode === 'edit' ? 'Editar Idioma' : 'Novo Idioma'}
         </DialogTitle>
         <DialogContent>
           <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <TextField
               fullWidth
-              label="Nome"
-              value={formData.nome || ''}
-              onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+              label="Código"
+              value={formData.codigo || ''}
+              onChange={(e) => setFormData({ ...formData, codigo: e.target.value })}
               disabled={dialogMode === 'view'}
               required
+              inputProps={{ maxLength: 20 }}
+              helperText="Ex: pt-BR, en-US, es-ES"
             />
             <TextField
               fullWidth
-              label="Nacionalidade"
-              value={formData.nacionalidade || ''}
-              onChange={(e) => setFormData({ ...formData, nacionalidade: e.target.value })}
+              label="Descrição"
+              value={formData.descricao || ''}
+              onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
               disabled={dialogMode === 'view'}
+              inputProps={{ maxLength: 100 }}
             />
           </Box>
         </DialogContent>
@@ -255,4 +255,4 @@ const AutoresPage: React.FC = () => {
   );
 };
 
-export default AutoresPage;
+export default IdiomasPage;

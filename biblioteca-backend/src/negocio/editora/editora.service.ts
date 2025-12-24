@@ -18,7 +18,12 @@ export class EditoraService {
   }
 
   async findAll(): Promise<Editora[]> {
-    return await this.editoraRepository.find({ relations: ['livros'] });
+    return await this.editoraRepository.find({ 
+      relations: ['livros'] ,
+      order: {
+        nome: 'ASC',
+      },
+    });
   }
 
   async findOne(id: number): Promise<Editora> {

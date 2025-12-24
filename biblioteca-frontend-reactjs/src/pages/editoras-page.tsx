@@ -16,23 +16,22 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { categoriaService } from '../services/categoriaService';
-import { Categoria, CategoriaFilters } from '../types/categoria';
+import { editoraService } from '../services/editora-service';
+import { Editora, EditoraFilters } from '../types/editora';
 
-const CategoriasPage: React.FC = () => {
-  const [categorias, setCategorias] = useState<Categoria[]>([]);
+const EditorasPage: React.FC = () => {
+  const [editoras, setEditoras] = useState<Editora[]>([]);
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState<CategoriaFilters>({});
+  const [filters, setFilters] = useState<EditoraFilters>({});
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogMode, setDialogMode] = useState<'view' | 'edit' | 'create'>('view');
-  const [selectedCategoria, setSelectedCategoria] = useState<Categoria | null>(null);
-  const [formData, setFormData] = useState<Partial<Categoria>>({});
+  const [selectedEditora, setSelectedEditora] = useState<Editora | null>(null);
+  const [formData, setFormData] = useState<Partial<Editora>>({});
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'nome', headerName: 'Nome', flex: 1, minWidth: 200 },
-    { field: 'descricao', headerName: 'Descrição', flex: 2, minWidth: 300 },
+    { field: 'nome', headerName: 'Nome', flex: 1, minWidth: 300 },
     {
       field: 'actions',
       type: 'actions',
@@ -59,68 +58,69 @@ const CategoriasPage: React.FC = () => {
   ];
 
   useEffect(() => {
-    loadCategorias();
+    loadEditoras();
   }, []);
 
-  const loadCategorias = async (searchFilters?: CategoriaFilters) => {
+  const loadEditoras = async (searchFilters?: EditoraFilters) => {
     setLoading(true);
     try {
-      const data = await categoriaService.getAll(searchFilters);
+      const data = await editoraService.getAll(searchFilters);
+      // Valida se os dados retornados são um array e têm IDs válidos
       if (Array.isArray(data)) {
         const validData = data.filter(item => item && typeof item.id !== 'undefined');
-        setCategorias(validData);
+        setEditoras(validData);
       } else {
         console.error('Dados inválidos recebidos da API:', data);
-        setCategorias([]);
+        setEditoras([]);
         showSnackbar('Formato de dados inválido recebido da API', 'error');
       }
     } catch (error) {
-      console.error('Erro ao carregar categorias:', error);
-      setCategorias([]);
-      showSnackbar('Erro ao carregar categorias', 'error');
+      console.error('Erro ao carregar editoras:', error);
+      setEditoras([]);
+      showSnackbar('Erro ao carregar editoras', 'error');
     } finally {
       setLoading(false);
     }
   };
 
   const handleSearch = () => {
-    loadCategorias(filters);
+    loadEditoras(filters);
   };
 
   const handleClear = () => {
     setFilters({});
-    loadCategorias();
+    loadEditoras();
   };
 
-  const handleView = (categoria: Categoria) => {
-    setSelectedCategoria(categoria);
-    setFormData(categoria);
+  const handleView = (editora: Editora) => {
+    setSelectedEditora(editora);
+    setFormData(editora);
     setDialogMode('view');
     setOpenDialog(true);
   };
 
-  const handleEdit = (categoria: Categoria) => {
-    setSelectedCategoria(categoria);
-    setFormData(categoria);
+  const handleEdit = (editora: Editora) => {
+    setSelectedEditora(editora);
+    setFormData(editora);
     setDialogMode('edit');
     setOpenDialog(true);
   };
 
   const handleCreate = () => {
-    setSelectedCategoria(null);
+    setSelectedEditora(null);
     setFormData({});
     setDialogMode('create');
     setOpenDialog(true);
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Tem certeza que deseja excluir esta categoria?')) {
+    if (window.confirm('Tem certeza que deseja excluir esta editora?')) {
       try {
-        await categoriaService.delete(id);
-        showSnackbar('Categoria excluída com sucesso', 'success');
-        loadCategorias(filters);
+        await editoraService.delete(id);
+        showSnackbar('Editora excluída com sucesso', 'success');
+        loadEditoras(filters);
       } catch (error) {
-        showSnackbar('Erro ao excluir categoria', 'error');
+        showSnackbar('Erro ao excluir editora', 'error');
       }
     }
   };
@@ -128,16 +128,16 @@ const CategoriasPage: React.FC = () => {
   const handleSave = async () => {
     try {
       if (dialogMode === 'create') {
-        await categoriaService.create(formData as Omit<Categoria, 'id'>);
-        showSnackbar('Categoria criada com sucesso', 'success');
-      } else if (dialogMode === 'edit' && selectedCategoria) {
-        await categoriaService.update(selectedCategoria.id, formData);
-        showSnackbar('Categoria atualizada com sucesso', 'success');
+        await editoraService.create(formData as Omit<Editora, 'id'>);
+        showSnackbar('Editora criada com sucesso', 'success');
+      } else if (dialogMode === 'edit' && selectedEditora) {
+        await editoraService.update(selectedEditora.id, formData);
+        showSnackbar('Editora atualizada com sucesso', 'success');
       }
       setOpenDialog(false);
-      loadCategorias(filters);
+      loadEditoras(filters);
     } catch (error) {
-      showSnackbar('Erro ao salvar categoria', 'error');
+      showSnackbar('Erro ao salvar editora', 'error');
     }
   };
 
@@ -148,7 +148,7 @@ const CategoriasPage: React.FC = () => {
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Categorias
+        Editoras
       </Typography>
 
       {/* Filtros */}
@@ -157,20 +157,12 @@ const CategoriasPage: React.FC = () => {
           Filtros de Pesquisa
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={8}>
             <TextField
               fullWidth
               label="Nome"
               value={filters.nome || ''}
               onChange={(e) => setFilters({ ...filters, nome: e.target.value })}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="Descrição"
-              value={filters.descricao || ''}
-              onChange={(e) => setFilters({ ...filters, descricao: e.target.value })}
             />
           </Grid>
           <Grid item xs={12}>
@@ -182,7 +174,7 @@ const CategoriasPage: React.FC = () => {
                 Limpar
               </Button>
               <Button variant="contained" color="success" onClick={handleCreate}>
-                Nova Categoria
+                Nova Editora
               </Button>
             </Box>
           </Grid>
@@ -192,12 +184,12 @@ const CategoriasPage: React.FC = () => {
       {/* Grid */}
       <Paper sx={{ p: 2, height: 500 }}>
         <DataGrid
-          rows={categorias}
+          rows={editoras}
           columns={columns}
           loading={loading}
           pageSizeOptions={[5, 10, 25, 50]}
           initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
+            pagination: { paginationModel: { pageSize: 25 } },
           }}
         />
       </Paper>
@@ -205,10 +197,10 @@ const CategoriasPage: React.FC = () => {
       {/* Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>
-          {dialogMode === 'view' ? 'Detalhes da Categoria' : dialogMode === 'edit' ? 'Editar Categoria' : 'Nova Categoria'}
+          {dialogMode === 'view' ? 'Detalhes da Editora' : dialogMode === 'edit' ? 'Editar Editora' : 'Nova Editora'}
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ mt: 2 }}>
             <TextField
               fullWidth
               label="Nome"
@@ -216,15 +208,6 @@ const CategoriasPage: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
               disabled={dialogMode === 'view'}
               required
-            />
-            <TextField
-              fullWidth
-              label="Descrição"
-              multiline
-              rows={4}
-              value={formData.descricao || ''}
-              onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
-              disabled={dialogMode === 'view'}
             />
           </Box>
         </DialogContent>
@@ -254,4 +237,4 @@ const CategoriasPage: React.FC = () => {
   );
 };
 
-export default CategoriasPage;
+export default EditorasPage;

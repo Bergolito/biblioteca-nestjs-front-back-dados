@@ -20,17 +20,20 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { livroService } from '../services/livroService';
-import { autorService } from '../services/autorService';
-import { editoraService } from '../services/editoraService';
+import { livroService } from '../services/livro-service';
+import { autorService } from '../services/autor-service';
+import { editoraService } from '../services/editora-service';
+import { idiomaService } from '../services/idioma-service';
 import { Livro, LivroFilters } from '../types/livro';
 import { Autor } from '../types/autor';
 import { Editora } from '../types/editora';
+import { Idioma } from '../types/idioma';
 
 const LivrosPage: React.FC = () => {
   const [livros, setLivros] = useState<Livro[]>([]);
   const [autores, setAutores] = useState<Autor[]>([]);
   const [editoras, setEditoras] = useState<Editora[]>([]);
+  const [idiomas, setIdiomas] = useState<Idioma[]>([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<LivroFilters>({});
   const [openDialog, setOpenDialog] = useState(false);
@@ -59,6 +62,12 @@ const LivrosPage: React.FC = () => {
       flex: 1,
       minWidth: 150,
       valueGetter: (params) => params.row.editora?.nome || '-',
+    },
+    {
+      field: 'idioma',
+      headerName: 'Idioma',
+      width: 120,
+      valueGetter: (params) => params.row.idioma?.codigo || '-',
     },
     {
       field: 'actions',
@@ -90,7 +99,7 @@ const LivrosPage: React.FC = () => {
   }, []);
 
   const loadInitialData = async () => {
-    await Promise.all([loadLivros(), loadAutores(), loadEditoras()]);
+    await Promise.all([loadLivros(), loadAutores(), loadEditoras(), loadIdiomas()]);
   };
 
   const loadLivros = async (searchFilters?: LivroFilters) => {
@@ -142,6 +151,21 @@ const LivrosPage: React.FC = () => {
     } catch (error) {
       console.error('Erro ao carregar editoras', error);
       setEditoras([]);
+    }
+  };
+
+  const loadIdiomas = async () => {
+    try {
+      const data = await idiomaService.getAll();
+      if (Array.isArray(data)) {
+        const validData = data.filter(item => item && typeof item.id !== 'undefined');
+        setIdiomas(validData);
+      } else {
+        setIdiomas([]);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar idiomas', error);
+      setIdiomas([]);
     }
   };
 
@@ -278,6 +302,23 @@ const LivrosPage: React.FC = () => {
               </Select>
             </FormControl>
           </Grid>
+          <Grid item xs={12} md={4}>
+            <FormControl fullWidth>
+              <InputLabel>Idioma</InputLabel>
+              <Select
+                value={filters.idioma_id || ''}
+                label="Idioma"
+                onChange={(e) => setFilters({ ...filters, idioma_id: e.target.value as number })}
+              >
+                <MenuItem value="">Todos</MenuItem>
+                {idiomas.map((idioma) => (
+                  <MenuItem key={idioma.id} value={idioma.id}>
+                    {idioma.codigo} - {idioma.descricao}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
           <Grid item xs={12}>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Button variant="contained" onClick={handleSearch}>
@@ -302,7 +343,7 @@ const LivrosPage: React.FC = () => {
           loading={loading}
           pageSizeOptions={[5, 10, 25, 50]}
           initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
+            pagination: { paginationModel: { pageSize: 25 } },
           }}
         />
       </Paper>
@@ -389,6 +430,22 @@ const LivrosPage: React.FC = () => {
                 {editoras.map((editora) => (
                   <MenuItem key={editora.id} value={editora.id}>
                     {editora.nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel>Idioma</InputLabel>
+              <Select
+                value={formData.idioma_id || ''}
+                label="Idioma"
+                onChange={(e) => setFormData({ ...formData, idioma_id: e.target.value as number })}
+                disabled={dialogMode === 'view'}
+              >
+                <MenuItem value="">Selecione um idioma</MenuItem>
+                {idiomas.map((idioma) => (
+                  <MenuItem key={idioma.id} value={idioma.id}>
+                    {idioma.codigo} - {idioma.descricao}
                   </MenuItem>
                 ))}
               </Select>

@@ -16,22 +16,23 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { editoraService } from '../services/editoraService';
-import { Editora, EditoraFilters } from '../types/editora';
+import { autorService } from '../services/autor-service';
+import { Autor, AutorFilters } from '../types/autor';
 
-const EditorasPage: React.FC = () => {
-  const [editoras, setEditoras] = useState<Editora[]>([]);
+const AutoresPage: React.FC = () => {
+  const [autores, setAutores] = useState<Autor[]>([]);
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState<EditoraFilters>({});
+  const [filters, setFilters] = useState<AutorFilters>({});
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogMode, setDialogMode] = useState<'view' | 'edit' | 'create'>('view');
-  const [selectedEditora, setSelectedEditora] = useState<Editora | null>(null);
-  const [formData, setFormData] = useState<Partial<Editora>>({});
+  const [selectedAutor, setSelectedAutor] = useState<Autor | null>(null);
+  const [formData, setFormData] = useState<Partial<Autor>>({});
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'nome', headerName: 'Nome', flex: 1, minWidth: 300 },
+    { field: 'nome', headerName: 'Nome', flex: 1, minWidth: 200 },
+    { field: 'nacionalidade', headerName: 'Nacionalidade', flex: 1, minWidth: 150 },
     {
       field: 'actions',
       type: 'actions',
@@ -58,69 +59,69 @@ const EditorasPage: React.FC = () => {
   ];
 
   useEffect(() => {
-    loadEditoras();
+    loadAutores();
   }, []);
 
-  const loadEditoras = async (searchFilters?: EditoraFilters) => {
+  const loadAutores = async (searchFilters?: AutorFilters) => {
     setLoading(true);
     try {
-      const data = await editoraService.getAll(searchFilters);
+      const data = await autorService.getAll(searchFilters);
       // Valida se os dados retornados são um array e têm IDs válidos
       if (Array.isArray(data)) {
         const validData = data.filter(item => item && typeof item.id !== 'undefined');
-        setEditoras(validData);
+        setAutores(validData);
       } else {
         console.error('Dados inválidos recebidos da API:', data);
-        setEditoras([]);
+        setAutores([]);
         showSnackbar('Formato de dados inválido recebido da API', 'error');
       }
     } catch (error) {
-      console.error('Erro ao carregar editoras:', error);
-      setEditoras([]);
-      showSnackbar('Erro ao carregar editoras', 'error');
+      console.error('Erro ao carregar autores:', error);
+      setAutores([]);
+      showSnackbar('Erro ao carregar autores', 'error');
     } finally {
       setLoading(false);
     }
   };
 
   const handleSearch = () => {
-    loadEditoras(filters);
+    loadAutores(filters);
   };
 
   const handleClear = () => {
     setFilters({});
-    loadEditoras();
+    loadAutores();
   };
 
-  const handleView = (editora: Editora) => {
-    setSelectedEditora(editora);
-    setFormData(editora);
+  const handleView = (autor: Autor) => {
+    setSelectedAutor(autor);
+    setFormData(autor);
     setDialogMode('view');
     setOpenDialog(true);
   };
 
-  const handleEdit = (editora: Editora) => {
-    setSelectedEditora(editora);
-    setFormData(editora);
+  const handleEdit = (autor: Autor) => {
+    setSelectedAutor(autor);
+    setFormData(autor);
     setDialogMode('edit');
     setOpenDialog(true);
   };
 
   const handleCreate = () => {
-    setSelectedEditora(null);
+    setSelectedAutor(null);
     setFormData({});
     setDialogMode('create');
     setOpenDialog(true);
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Tem certeza que deseja excluir esta editora?')) {
+    if (window.confirm('Tem certeza que deseja excluir este autor?')) {
       try {
-        await editoraService.delete(id);
-        showSnackbar('Editora excluída com sucesso', 'success');
-        loadEditoras(filters);
+        await autorService.delete(id);
+        showSnackbar('Autor excluído com sucesso', 'success');
+        loadAutores(filters);
       } catch (error) {
-        showSnackbar('Erro ao excluir editora', 'error');
+        showSnackbar('Erro ao excluir autor', 'error');
       }
     }
   };
@@ -128,16 +129,16 @@ const EditorasPage: React.FC = () => {
   const handleSave = async () => {
     try {
       if (dialogMode === 'create') {
-        await editoraService.create(formData as Omit<Editora, 'id'>);
-        showSnackbar('Editora criada com sucesso', 'success');
-      } else if (dialogMode === 'edit' && selectedEditora) {
-        await editoraService.update(selectedEditora.id, formData);
-        showSnackbar('Editora atualizada com sucesso', 'success');
+        await autorService.create(formData as Omit<Autor, 'id'>);
+        showSnackbar('Autor criado com sucesso', 'success');
+      } else if (dialogMode === 'edit' && selectedAutor) {
+        await autorService.update(selectedAutor.id, formData);
+        showSnackbar('Autor atualizado com sucesso', 'success');
       }
       setOpenDialog(false);
-      loadEditoras(filters);
+      loadAutores(filters);
     } catch (error) {
-      showSnackbar('Erro ao salvar editora', 'error');
+      showSnackbar('Erro ao salvar autor', 'error');
     }
   };
 
@@ -148,7 +149,7 @@ const EditorasPage: React.FC = () => {
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Editoras
+        Autores
       </Typography>
 
       {/* Filtros */}
@@ -157,12 +158,20 @@ const EditorasPage: React.FC = () => {
           Filtros de Pesquisa
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={6}>
             <TextField
               fullWidth
               label="Nome"
               value={filters.nome || ''}
               onChange={(e) => setFilters({ ...filters, nome: e.target.value })}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Nacionalidade"
+              value={filters.nacionalidade || ''}
+              onChange={(e) => setFilters({ ...filters, nacionalidade: e.target.value })}
             />
           </Grid>
           <Grid item xs={12}>
@@ -174,7 +183,7 @@ const EditorasPage: React.FC = () => {
                 Limpar
               </Button>
               <Button variant="contained" color="success" onClick={handleCreate}>
-                Nova Editora
+                Novo Autor
               </Button>
             </Box>
           </Grid>
@@ -184,12 +193,12 @@ const EditorasPage: React.FC = () => {
       {/* Grid */}
       <Paper sx={{ p: 2, height: 500 }}>
         <DataGrid
-          rows={editoras}
+          rows={autores}
           columns={columns}
           loading={loading}
           pageSizeOptions={[5, 10, 25, 50]}
           initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
+            pagination: { paginationModel: { pageSize: 25 } },
           }}
         />
       </Paper>
@@ -197,10 +206,10 @@ const EditorasPage: React.FC = () => {
       {/* Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>
-          {dialogMode === 'view' ? 'Detalhes da Editora' : dialogMode === 'edit' ? 'Editar Editora' : 'Nova Editora'}
+          {dialogMode === 'view' ? 'Detalhes do Autor' : dialogMode === 'edit' ? 'Editar Autor' : 'Novo Autor'}
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <TextField
               fullWidth
               label="Nome"
@@ -208,6 +217,13 @@ const EditorasPage: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
               disabled={dialogMode === 'view'}
               required
+            />
+            <TextField
+              fullWidth
+              label="Nacionalidade"
+              value={formData.nacionalidade || ''}
+              onChange={(e) => setFormData({ ...formData, nacionalidade: e.target.value })}
+              disabled={dialogMode === 'view'}
             />
           </Box>
         </DialogContent>
@@ -237,4 +253,4 @@ const EditorasPage: React.FC = () => {
   );
 };
 
-export default EditorasPage;
+export default AutoresPage;

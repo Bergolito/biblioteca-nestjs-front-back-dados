@@ -20,6 +20,9 @@ export class LivroService {
   async findAll(): Promise<Livro[]> {
     return await this.livroRepository.find({
       relations: ['autor', 'editora', 'imagem', 'categoriaLivros'],
+      order: {
+        titulo: 'ASC',
+      },
     });
   }
 

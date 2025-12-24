@@ -10,9 +10,9 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 export class LivroController {
   constructor(private readonly livroService: LivroService) {}
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post()
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Criar novo livro' })
   @ApiResponse({ status: 201, description: 'Livro criado com sucesso' })
   create(@Body() createLivroDto: CreateLivroDto) {
@@ -33,18 +33,18 @@ export class LivroController {
     return this.livroService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Patch(':id')
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Atualizar livro' })
   @ApiResponse({ status: 200, description: 'Livro atualizado com sucesso' })
   update(@Param('id') id: string, @Body() updateLivroDto: UpdateLivroDto) {
     return this.livroService.update(+id, updateLivroDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Delete(':id')
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Deletar livro' })
   @ApiResponse({ status: 200, description: 'Livro deletado com sucesso' })
   remove(@Param('id') id: string) {

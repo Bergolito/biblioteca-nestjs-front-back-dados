@@ -2,6 +2,7 @@ import api from './api';
 import { Livro, LivroFilters } from '../types/livro';
 
 export const livroService = {
+    
   getAll: async (filters?: LivroFilters): Promise<Livro[]> => {
     const params = new URLSearchParams();
     if (filters?.titulo) params.append('titulo', filters.titulo);

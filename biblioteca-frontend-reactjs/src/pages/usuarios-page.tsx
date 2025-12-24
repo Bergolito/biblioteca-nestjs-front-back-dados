@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { usuarioService } from '../services/usuarioService';
+import { usuarioService } from '../services/usuario-service';
 import { Usuario, UsuarioFilters } from '../types/usuario';
 
 const UsuariosPage: React.FC = () => {
@@ -218,7 +218,7 @@ const UsuariosPage: React.FC = () => {
           loading={loading}
           pageSizeOptions={[5, 10, 25, 50]}
           initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
+            pagination: { paginationModel: { pageSize: 25 } },
           }}
         />
       </Paper>

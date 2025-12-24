@@ -2,13 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline, Box } from '@mui/material';
 import Navbar from './components/Navbar';
-import HomePage from './pages/HomePage';
-import AutoresPage from './pages/AutoresPage';
-import EditorasPage from './pages/EditorasPage';
-import LivrosPage from './pages/LivrosPage';
-import CategoriasPage from './pages/CategoriasPage';
-import IdiomasPage from './pages/IdiomasPage';
-import UsuariosPage from './pages/UsuariosPage';
+import HomePage from './pages/home-page';
+import AutoresPage from './pages/autores-page';
+import EditorasPage from './pages/editoras-page';
+import LivrosPage from './pages/livros-page';
+import CategoriasPage from './pages/categorias-page';
+import IdiomasPage from './pages/idiomas-page';
+import UsuariosPage from './pages/usuarios-page';
 
 const theme = createTheme({
   palette: {

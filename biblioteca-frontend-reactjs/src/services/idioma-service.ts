@@ -2,6 +2,7 @@ import api from './api';
 import { Idioma, IdiomaFilters } from '../types/idioma';
 
 export const idiomaService = {
+    
   getAll: async (filters?: IdiomaFilters): Promise<Idioma[]> => {
     const params = new URLSearchParams();
     if (filters?.codigo) params.append('codigo', filters.codigo);

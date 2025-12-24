@@ -2,6 +2,7 @@ import api from './api';
 import { Usuario, UsuarioFilters } from '../types/usuario';
 
 export const usuarioService = {
+    
   getAll: async (filters?: UsuarioFilters): Promise<Usuario[]> => {
     const params = new URLSearchParams();
     if (filters?.email) params.append('email', filters.email);

@@ -18,7 +18,12 @@ export class IdiomaService {
   }
 
   async findAll(): Promise<Idioma[]> {
-    return await this.idiomaRepository.find();
+    return await this.idiomaRepository.find({
+        order: {
+          codigo: 'ASC',
+        },
+      } 
+    );
   }
 
   async findOne(id: number): Promise<Idioma> {
