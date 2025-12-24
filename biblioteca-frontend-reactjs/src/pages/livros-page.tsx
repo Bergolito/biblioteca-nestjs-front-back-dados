@@ -103,6 +103,8 @@ const LivrosPage: React.FC = () => {
   };
 
   const loadLivros = async (searchFilters?: LivroFilters) => {
+    console.log('Carregando livros com filtros:', searchFilters);
+
     setLoading(true);
     try {
       const data = await livroService.getAll(searchFilters);

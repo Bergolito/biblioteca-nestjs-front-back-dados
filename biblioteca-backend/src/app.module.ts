@@ -27,7 +27,7 @@ import { AuthModule } from './auth/auth.module';
       migrations: [__dirname + '/migrations/*{.ts,.js}'],
       synchronize: process.env.NODE_ENV === 'development', // Apenas em desenvolvimento
       migrationsRun: process.env.NODE_ENV === 'production', // Auto-run em produção
-      logging: true,
+      logging: false,
     }),
     AutorModule,
     EditoraModule,
