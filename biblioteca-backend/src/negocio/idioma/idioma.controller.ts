@@ -10,9 +10,9 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 export class IdiomaController {
   constructor(private readonly idiomaService: IdiomaService) {}
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post()
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Criar novo idioma' })
   @ApiResponse({ status: 201, description: 'Idioma criado com sucesso' })
   create(@Body() createIdiomaDto: CreateIdiomaDto) {
@@ -33,18 +33,18 @@ export class IdiomaController {
     return this.idiomaService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Patch(':id')
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Atualizar idioma' })
   @ApiResponse({ status: 200, description: 'Idioma atualizado com sucesso' })
   update(@Param('id') id: string, @Body() updateIdiomaDto: UpdateIdiomaDto) {
     return this.idiomaService.update(+id, updateIdiomaDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Delete(':id')
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Deletar idioma' })
   @ApiResponse({ status: 200, description: 'Idioma deletado com sucesso' })
   remove(@Param('id') id: string) {

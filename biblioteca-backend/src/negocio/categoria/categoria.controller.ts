@@ -10,9 +10,9 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 export class CategoriaController {
   constructor(private readonly categoriaService: CategoriaService) {}
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post()
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Criar nova categoria' })
   @ApiResponse({ status: 201, description: 'Categoria criada com sucesso' })
   create(@Body() createCategoriaDto: CreateCategoriaDto) {
@@ -33,18 +33,18 @@ export class CategoriaController {
     return this.categoriaService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Patch(':id')
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Atualizar categoria' })
   @ApiResponse({ status: 200, description: 'Categoria atualizada com sucesso' })
   update(@Param('id') id: string, @Body() updateCategoriaDto: UpdateCategoriaDto) {
     return this.categoriaService.update(+id, updateCategoriaDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Delete(':id')
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Deletar categoria' })
   @ApiResponse({ status: 200, description: 'Categoria deletada com sucesso' })
   remove(@Param('id') id: string) {

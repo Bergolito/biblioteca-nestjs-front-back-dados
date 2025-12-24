@@ -2,6 +2,7 @@ import api from './api';
 import { Autor, AutorFilters } from '../types/autor';
 
 export const autorService = {
+    
   getAll: async (filters?: AutorFilters): Promise<Autor[]> => {
     const params = new URLSearchParams();
     if (filters?.nome) params.append('nome', filters.nome);

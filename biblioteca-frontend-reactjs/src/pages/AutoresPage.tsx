@@ -67,8 +67,18 @@ const AutoresPage: React.FC = () => {
     setLoading(true);
     try {
       const data = await autorService.getAll(searchFilters);
-      setAutores(data);
+      // Valida se os dados retornados são um array e têm IDs válidos
+      if (Array.isArray(data)) {
+        const validData = data.filter(item => item && typeof item.id !== 'undefined');
+        setAutores(validData);
+      } else {
+        console.error('Dados inválidos recebidos da API:', data);
+        setAutores([]);
+        showSnackbar('Formato de dados inválido recebido da API', 'error');
+      }
     } catch (error) {
+      console.error('Erro ao carregar autores:', error);
+      setAutores([]);
       showSnackbar('Erro ao carregar autores', 'error');
     } finally {
       setLoading(false);
@@ -191,7 +201,8 @@ const AutoresPage: React.FC = () => {
           initialState={{
             pagination: { paginationModel: { pageSize: 10 } },
           }}
-        />
+        >
+        </DataGrid>
       </Paper>
 
       {/* Dialog */}

@@ -97,8 +97,18 @@ const LivrosPage: React.FC = () => {
     setLoading(true);
     try {
       const data = await livroService.getAll(searchFilters);
-      setLivros(data);
+      // Valida se os dados retornados são um array e têm IDs válidos
+      if (Array.isArray(data)) {
+        const validData = data.filter(item => item && typeof item.id !== 'undefined');
+        setLivros(validData);
+      } else {
+        console.error('Dados inválidos recebidos da API:', data);
+        setLivros([]);
+        showSnackbar('Formato de dados inválido recebido da API', 'error');
+      }
     } catch (error) {
+      console.error('Erro ao carregar livros:', error);
+      setLivros([]);
       showSnackbar('Erro ao carregar livros', 'error');
     } finally {
       setLoading(false);
@@ -108,18 +118,30 @@ const LivrosPage: React.FC = () => {
   const loadAutores = async () => {
     try {
       const data = await autorService.getAll();
-      setAutores(data);
+      if (Array.isArray(data)) {
+        const validData = data.filter(item => item && typeof item.id !== 'undefined');
+        setAutores(validData);
+      } else {
+        setAutores([]);
+      }
     } catch (error) {
       console.error('Erro ao carregar autores', error);
+      setAutores([]);
     }
   };
 
   const loadEditoras = async () => {
     try {
       const data = await editoraService.getAll();
-      setEditoras(data);
+      if (Array.isArray(data)) {
+        const validData = data.filter(item => item && typeof item.id !== 'undefined');
+        setEditoras(validData);
+      } else {
+        setEditoras([]);
+      }
     } catch (error) {
       console.error('Erro ao carregar editoras', error);
+      setEditoras([]);
     }
   };
 

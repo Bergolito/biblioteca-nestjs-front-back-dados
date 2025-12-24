@@ -10,9 +10,9 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 export class EditoraController {
   constructor(private readonly editoraService: EditoraService) {}
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post()
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Criar nova editora' })
   @ApiResponse({ status: 201, description: 'Editora criada com sucesso' })
   create(@Body() createEditoraDto: CreateEditoraDto) {
@@ -33,18 +33,18 @@ export class EditoraController {
     return this.editoraService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Patch(':id')
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Atualizar editora' })
   @ApiResponse({ status: 200, description: 'Editora atualizada com sucesso' })
   update(@Param('id') id: string, @Body() updateEditoraDto: UpdateEditoraDto) {
     return this.editoraService.update(+id, updateEditoraDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Delete(':id')
-  @ApiBearerAuth('JWT-auth')
+  //@ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Deletar editora' })
   @ApiResponse({ status: 200, description: 'Editora deletada com sucesso' })
   remove(@Param('id') id: string) {

@@ -65,8 +65,18 @@ const EditorasPage: React.FC = () => {
     setLoading(true);
     try {
       const data = await editoraService.getAll(searchFilters);
-      setEditoras(data);
+      // Valida se os dados retornados são um array e têm IDs válidos
+      if (Array.isArray(data)) {
+        const validData = data.filter(item => item && typeof item.id !== 'undefined');
+        setEditoras(validData);
+      } else {
+        console.error('Dados inválidos recebidos da API:', data);
+        setEditoras([]);
+        showSnackbar('Formato de dados inválido recebido da API', 'error');
+      }
     } catch (error) {
+      console.error('Erro ao carregar editoras:', error);
+      setEditoras([]);
       showSnackbar('Erro ao carregar editoras', 'error');
     } finally {
       setLoading(false);
