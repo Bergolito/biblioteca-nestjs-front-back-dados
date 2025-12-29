@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { EditoraService } from './editora.service';
 import { CreateEditoraDto } from './dto/create-editora.dto';
@@ -22,7 +22,10 @@ export class EditoraController {
   @Get()
   @ApiOperation({ summary: 'Listar todas as editoras' })
   @ApiResponse({ status: 200, description: 'Lista de editoras retornada com sucesso' })
-  findAll() {
+  findAll(@Query() query: any) {
+    if (Object.keys(query).length > 0) {
+      return this.editoraService.findAllByFilter(query);
+    }
     return this.editoraService.findAll();
   }
 

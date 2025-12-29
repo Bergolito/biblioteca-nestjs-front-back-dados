@@ -27,6 +27,22 @@ export class CategoriaService {
     );
   }
 
+  async findAllByFilter(filters: any): Promise<Categoria[]> {
+    const query = this.categoriaRepository.createQueryBuilder('categoria');
+
+    if (filters.nome) {
+      query.andWhere('categoria.nome ILIKE :nome', { nome: `%${filters.nome}%` });
+    }
+
+    if (filters.descricao) {
+      query.andWhere('categoria.descricao ILIKE :descricao', { descricao: `%${filters.descricao}%` });
+    }
+
+    query.orderBy('categoria.nome', 'ASC');
+
+    return await query.getMany();
+  }
+
   async findOne(id: number): Promise<Categoria> {
     const categoria = await this.categoriaRepository.findOne({
       where: { id },

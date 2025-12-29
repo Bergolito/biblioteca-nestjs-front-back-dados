@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AutorService } from './autor.service';
 import { CreateAutorDto } from './dto/create-autor.dto';
@@ -22,7 +22,10 @@ export class AutorController {
   @Get()
   @ApiOperation({ summary: 'Listar todos os autores' })
   @ApiResponse({ status: 200, description: 'Lista de autores retornada com sucesso' })
-  findAll() {
+  findAll(@Query() query: any) {
+    if (Object.keys(query).length > 0) {
+      return this.autorService.findAllByFilter(query);
+    }
     return this.autorService.findAll();
   }
 

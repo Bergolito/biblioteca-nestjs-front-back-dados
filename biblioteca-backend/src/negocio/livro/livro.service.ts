@@ -35,6 +35,8 @@ export class LivroService {
   }
 
   async findAllFilter(filters: LivroFilters): Promise<Livro[]> {
+    console.log('Fetching books with filters:', filters);
+    
     const query = this.livroRepository.createQueryBuilder('livro')
       .leftJoinAndSelect('livro.autor', 'autor')
       .leftJoinAndSelect('livro.editora', 'editora')

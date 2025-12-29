@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { LivroService } from './livro.service';
 import { CreateLivroDto } from './dto/create-livro.dto';
@@ -22,7 +22,10 @@ export class LivroController {
   @Get()
   @ApiOperation({ summary: 'Listar todos os livros' })
   @ApiResponse({ status: 200, description: 'Lista de livros retornada com sucesso' })
-  findAll() {
+  findAll(@Query() query: any) {
+    if (Object.keys(query).length > 0) {
+      return this.livroService.findAllFilter(query);
+    }
     return this.livroService.findAll();
   }
 

@@ -26,6 +26,22 @@ export class IdiomaService {
     );
   }
 
+  async findAllByFilter(filters: any): Promise<Idioma[]> {
+    const query = this.idiomaRepository.createQueryBuilder('idioma');
+
+    if (filters.codigo) {
+      query.andWhere('idioma.codigo ILIKE :codigo', { codigo: `%${filters.codigo}%` });
+    }
+
+    if (filters.descricao) {
+      query.andWhere('idioma.descricao ILIKE :descricao', { descricao: `%${filters.descricao}%` });
+    }
+
+    query.orderBy('idioma.codigo', 'ASC');
+
+    return await query.getMany();
+  }
+
   async findOne(id: number): Promise<Idioma> {
     const idioma = await this.idiomaRepository.findOne({
       where: { id },

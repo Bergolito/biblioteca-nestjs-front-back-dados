@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CategoriaService } from './categoria.service';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
@@ -22,7 +22,10 @@ export class CategoriaController {
   @Get()
   @ApiOperation({ summary: 'Listar todas as categorias' })
   @ApiResponse({ status: 200, description: 'Lista de categorias retornada com sucesso' })
-  findAll() {
+  findAll(@Query() query: any) {
+    if (Object.keys(query).length > 0) {
+      return this.categoriaService.findAllByFilter(query);
+    }
     return this.categoriaService.findAll();
   }
 

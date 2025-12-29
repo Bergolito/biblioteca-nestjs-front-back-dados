@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { IdiomaService } from './idioma.service';
 import { CreateIdiomaDto } from './dto/create-idioma.dto';
@@ -22,7 +22,10 @@ export class IdiomaController {
   @Get()
   @ApiOperation({ summary: 'Listar todos os idiomas' })
   @ApiResponse({ status: 200, description: 'Lista de idiomas retornada com sucesso' })
-  findAll() {
+  findAll(@Query() query: any) {
+    if (Object.keys(query).length > 0) {
+      return this.idiomaService.findAllByFilter(query);
+    }
     return this.idiomaService.findAll();
   }
 

@@ -21,6 +21,30 @@ export class UsuarioService {
     return await this.usuarioRepository.find();
   }
 
+  async findAllByFilter(filters: any): Promise<Usuario[]> {
+    const query = this.usuarioRepository.createQueryBuilder('usuario');
+
+    if (filters.nome) {
+      query.andWhere('usuario.nome ILIKE :nome', { nome: `%${filters.nome}%` });
+    }
+
+    if (filters.email) {
+      query.andWhere('usuario.email ILIKE :email', { email: `%${filters.email}%` });
+    }
+
+    if (filters.telefone) {
+      query.andWhere('usuario.telefone ILIKE :telefone', { telefone: `%${filters.telefone}%` });
+    }
+
+    if (filters.sexo) {
+      query.andWhere('usuario.sexo = :sexo', { sexo: filters.sexo });
+    }
+
+    query.orderBy('usuario.nome', 'ASC');
+
+    return await query.getMany();
+  }
+
   async findOne(id: number): Promise<Usuario> {
     const usuario = await this.usuarioRepository.findOne({
       where: { id },

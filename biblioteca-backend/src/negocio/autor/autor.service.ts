@@ -26,6 +26,23 @@ export class AutorService {
     })
   }
 
+  async findAllByFilter(filters: any): Promise<Autor[]> {
+    const query = this.autorRepository.createQueryBuilder('autor')
+      .leftJoinAndSelect('autor.livros', 'livros');
+
+    if (filters.nome) {
+      query.andWhere('autor.nome ILIKE :nome', { nome: `%${filters.nome}%` });
+    }
+
+    if (filters.nacionalidade) {
+      query.andWhere('autor.nacionalidade ILIKE :nacionalidade', { nacionalidade: `%${filters.nacionalidade}%` });
+    }
+
+    query.orderBy('autor.nome', 'ASC');
+
+    return await query.getMany();
+  }
+
   async findOne(id: number): Promise<Autor> {
     const autor = await this.autorRepository.findOne({
       where: { id },

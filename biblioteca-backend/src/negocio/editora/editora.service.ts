@@ -26,6 +26,19 @@ export class EditoraService {
     });
   }
 
+  async findAllByFilter(filters: any): Promise<Editora[]> {
+    const query = this.editoraRepository.createQueryBuilder('editora')
+      .leftJoinAndSelect('editora.livros', 'livros');
+
+    if (filters.nome) {
+      query.andWhere('editora.nome ILIKE :nome', { nome: `%${filters.nome}%` });
+    }
+
+    query.orderBy('editora.nome', 'ASC');
+
+    return await query.getMany();
+  }
+
   async findOne(id: number): Promise<Editora> {
     const editora = await this.editoraRepository.findOne({
       where: { id },
