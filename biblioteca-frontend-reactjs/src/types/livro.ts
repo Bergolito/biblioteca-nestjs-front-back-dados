@@ -3,7 +3,8 @@ import { Editora } from './editora';
 
 export interface Idioma {
   id: number;
-  nome: string;
+  codigo: string;
+  descricao?: string;
 }
 
 export interface Livro {
@@ -16,6 +17,7 @@ export interface Livro {
   autor_id?: number;
   editora_id?: number;
   idioma_id?: number;
+  imagem_id?: number;
   autor?: Autor;
   editora?: Editora;
   idioma?: Idioma;

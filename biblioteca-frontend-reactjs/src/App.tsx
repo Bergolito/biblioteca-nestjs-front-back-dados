@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline, Box } from '@mui/material';
 import Navbar from './components/Navbar';
 import HomePage from './pages/home-page';
-import AutoresPage from './pages/autores-page';
-import EditorasPage from './pages/editoras-page';
-import LivrosPage from './pages/livros-page';
+import AutoresPage from './pages/autores/autores-page';
+import GridAutores from './pages/autores/grid-autores';
+import EditorasPage from './pages/editoras/editoras-page';
+import GridEditoras from './pages/editoras/grid-editoras';
+import LivrosPage from './pages/livros/livros-page';
+import GridLivros from './pages/livros/grid-livros';
 import CategoriasPage from './pages/categorias-page';
 import IdiomasPage from './pages/idiomas-page';
 import UsuariosPage from './pages/usuarios-page';
@@ -43,8 +46,11 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/autores" element={<AutoresPage />} />
+              <Route path="/autores/grid" element={<GridAutores />} />
               <Route path="/editoras" element={<EditorasPage />} />
+              <Route path="/editoras/grid" element={<GridEditoras />} />
               <Route path="/livros" element={<LivrosPage />} />
+              <Route path="/livros/grid" element={<GridLivros />} />
               <Route path="/categorias" element={<CategoriasPage />} />
               <Route path="/idiomas" element={<IdiomasPage />} />
               <Route path="/usuarios" element={<UsuariosPage />} />

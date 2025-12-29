@@ -47,15 +47,16 @@ const Navbar: React.FC = () => {
         </Typography>
         
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button color="inherit" onClick={() => navigate('/autores')}>
+
+          <Button color="inherit" onClick={() => navigate('/autores/grid')}>
             Autores
           </Button>
           
-          <Button color="inherit" onClick={() => navigate('/editoras')}>
+          <Button color="inherit" onClick={() => navigate('/editoras/grid')}>
             Editoras
           </Button>
           
-          <Button color="inherit" onClick={() => navigate('/livros')}>
+          <Button color="inherit" onClick={() => navigate('/livros/grid')}>
             Livros
           </Button>
           
@@ -71,6 +72,17 @@ const Navbar: React.FC = () => {
             open={Boolean(anchorElManutencao)}
             onClose={handleManutencaoClose}
           >
+
+            <MenuItem onClick={() => handleMenuItemClick('/autores')}>
+              Autores
+            </MenuItem>
+            <MenuItem onClick={() => handleMenuItemClick('/editoras')}>
+              Editoras
+            </MenuItem>
+            <MenuItem onClick={() => handleMenuItemClick('/livros')}>
+              Livros
+            </MenuItem>
+
             <MenuItem onClick={() => handleMenuItemClick('/categorias')}>
               Categorias
             </MenuItem>

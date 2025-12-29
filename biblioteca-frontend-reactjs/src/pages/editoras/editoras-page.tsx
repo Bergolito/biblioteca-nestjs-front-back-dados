@@ -16,8 +16,8 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { editoraService } from '../services/editora-service';
-import { Editora, EditoraFilters } from '../types/editora';
+import { editoraService } from '../../services/editora-service';
+import { Editora, EditoraFilters } from '../../types/editora';
 
 const EditorasPage: React.FC = () => {
   const [editoras, setEditoras] = useState<Editora[]>([]);

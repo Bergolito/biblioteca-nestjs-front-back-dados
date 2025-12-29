@@ -20,14 +20,14 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { livroService } from '../services/livro-service';
-import { autorService } from '../services/autor-service';
-import { editoraService } from '../services/editora-service';
-import { idiomaService } from '../services/idioma-service';
-import { Livro, LivroFilters } from '../types/livro';
-import { Autor } from '../types/autor';
-import { Editora } from '../types/editora';
-import { Idioma } from '../types/idioma';
+import { livroService } from '../../services/livro-service';
+import { autorService } from '../../services/autor-service';
+import { editoraService } from '../../services/editora-service';
+import { idiomaService } from '../../services/idioma-service';
+import { Livro, LivroFilters } from '../../types/livro';
+import { Autor } from '../../types/autor';
+import { Editora } from '../../types/editora';
+import { Idioma } from '../../types/idioma';
 
 const LivrosPage: React.FC = () => {
   const [livros, setLivros] = useState<Livro[]>([]);

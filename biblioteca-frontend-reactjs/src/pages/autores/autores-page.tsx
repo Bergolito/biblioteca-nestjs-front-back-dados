@@ -16,8 +16,8 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef, GridActionsCellItem } from '@mui/x-data-grid';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { autorService } from '../services/autor-service';
-import { Autor, AutorFilters } from '../types/autor';
+import { autorService } from '../../services/autor-service';
+import { Autor, AutorFilters } from '../../types/autor';
 
 const AutoresPage: React.FC = () => {
   const [autores, setAutores] = useState<Autor[]>([]);
