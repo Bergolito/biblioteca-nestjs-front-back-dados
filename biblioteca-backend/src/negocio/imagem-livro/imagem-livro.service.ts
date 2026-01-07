@@ -13,7 +13,10 @@ export class ImagemLivroService {
   ) {}
 
   async create(createImagemLivroDto: CreateImagemLivroDto): Promise<ImagemLivro> {
-    const imagemLivro = this.imagemLivroRepository.create(createImagemLivroDto);
+    const imagemLivro = this.imagemLivroRepository.create({
+      descricao: createImagemLivroDto.descricao,
+      arquivo: createImagemLivroDto.arquivo ? Buffer.from(createImagemLivroDto.arquivo, 'base64') : undefined,
+    });
     return await this.imagemLivroRepository.save(imagemLivro);
   }
 

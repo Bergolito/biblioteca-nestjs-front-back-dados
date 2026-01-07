@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AppBar,
   Box,
@@ -8,13 +8,25 @@ import {
   Menu,
   MenuItem,
   IconButton,
+  Chip,
 } from '@mui/material';
-import { Menu as MenuIcon, Book } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { Menu as MenuIcon, Book, Person, Logout } from '@mui/icons-material';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { getUsuario, logout } from '../../services/auth-service';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [anchorElManutencao, setAnchorElManutencao] = useState<null | HTMLElement>(null);
+  const [nomeUsuario, setNomeUsuario] = useState<string>('');
+
+  useEffect(() => {
+    const usuario = getUsuario();
+    console.log('Usuario do localStorage:', usuario);
+    if (usuario && usuario.nome) {
+      setNomeUsuario(usuario.nome);
+    }
+  }, [location]);
 
   const handleManutencaoClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElManutencao(event.currentTarget);
@@ -27,6 +39,12 @@ const Navbar: React.FC = () => {
   const handleMenuItemClick = (path: string) => {
     navigate(path);
     handleManutencaoClose();
+  };
+
+  const handleLogout = () => {
+    logout();
+    setNomeUsuario('');
+    navigate('/login');
   };
 
   return (
@@ -42,11 +60,11 @@ const Navbar: React.FC = () => {
         >
           <Book />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={{ mr: 4 }}>
           Biblioteca Pessoal
         </Typography>
         
-        <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2, flexGrow: 1, justifyContent: 'center' }}>
 
           <Button color="inherit" onClick={() => navigate('/autores/grid')}>
             Autores
@@ -93,6 +111,34 @@ const Navbar: React.FC = () => {
               Usuários
             </MenuItem>
           </Menu>
+        </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Chip
+            icon={<Person />}
+            label={`Olá, ${nomeUsuario || 'usuário'}`}
+            color="primary"
+            variant="outlined"
+            sx={{ 
+              color: 'white', 
+              borderColor: 'white',
+              '& .MuiChip-icon': {
+                color: 'white'
+              }
+            }}
+          />
+          <Button
+            color="inherit"
+            size="small"
+            startIcon={<Logout />}
+            onClick={handleLogout}
+            sx={{ 
+              fontSize: '0.875rem',
+              textTransform: 'none'
+            }}
+          >
+            Sair
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>

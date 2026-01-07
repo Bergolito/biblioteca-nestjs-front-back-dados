@@ -2,7 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline, Box } from '@mui/material';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/home-page';
+import LoginPage from './pages/login-page';
 import AutoresPage from './pages/autores/autores-page';
 import GridAutores from './pages/autores/grid-autores';
 import EditorasPage from './pages/editoras/editoras-page';
@@ -44,16 +46,17 @@ const App: React.FC = () => {
           <Navbar />
           <Box component="main" sx={{ flexGrow: 1, bgcolor: '#f5f5f5' }}>
             <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/autores" element={<AutoresPage />} />
-              <Route path="/autores/grid" element={<GridAutores />} />
-              <Route path="/editoras" element={<EditorasPage />} />
-              <Route path="/editoras/grid" element={<GridEditoras />} />
-              <Route path="/livros" element={<LivrosPage />} />
-              <Route path="/livros/grid" element={<GridLivros />} />
-              <Route path="/categorias" element={<CategoriasPage />} />
-              <Route path="/idiomas" element={<IdiomasPage />} />
-              <Route path="/usuarios" element={<UsuariosPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+              <Route path="/autores" element={<ProtectedRoute><AutoresPage /></ProtectedRoute>} />
+              <Route path="/autores/grid" element={<ProtectedRoute><GridAutores /></ProtectedRoute>} />
+              <Route path="/editoras" element={<ProtectedRoute><EditorasPage /></ProtectedRoute>} />
+              <Route path="/editoras/grid" element={<ProtectedRoute><GridEditoras /></ProtectedRoute>} />
+              <Route path="/livros" element={<ProtectedRoute><LivrosPage /></ProtectedRoute>} />
+              <Route path="/livros/grid" element={<ProtectedRoute><GridLivros /></ProtectedRoute>} />
+              <Route path="/categorias" element={<ProtectedRoute><CategoriasPage /></ProtectedRoute>} />
+              <Route path="/idiomas" element={<ProtectedRoute><IdiomasPage /></ProtectedRoute>} />
+              <Route path="/usuarios" element={<ProtectedRoute><UsuariosPage /></ProtectedRoute>} />
             </Routes>
           </Box>
         </Box>

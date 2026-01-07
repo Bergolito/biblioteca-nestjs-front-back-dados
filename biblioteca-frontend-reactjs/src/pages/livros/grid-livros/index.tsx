@@ -111,7 +111,7 @@ const GridLivros: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundImage: livro.imagem_id 
-                    ? `url(${process.env.REACT_APP_API_URL}/imagens/${livro.imagem_id})`
+                    ? `url(${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/imagens/${livro.imagem_id})`
                     : 'none',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
@@ -221,7 +221,7 @@ const GridLivros: React.FC = () => {
                     justifyContent: 'center',
                     borderRadius: 1,
                     backgroundImage: selectedLivro.imagem_id 
-                      ? `url(${process.env.REACT_APP_API_URL}/imagens/${selectedLivro.imagem_id})`
+                      ? `url(${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/imagens/${selectedLivro.imagem_id})`
                       : 'none',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
