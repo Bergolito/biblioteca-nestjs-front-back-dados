@@ -10,9 +10,9 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 export class AutorController {
   constructor(private readonly autorService: AutorService) {}
 
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
-  //@ApiBearerAuth('JWT-auth')
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Criar novo autor' })
   @ApiResponse({ status: 201, description: 'Autor criado com sucesso' })
   create(@Body() createAutorDto: CreateAutorDto) {
@@ -37,18 +37,18 @@ export class AutorController {
     return this.autorService.findOne(+id);
   }
 
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  //@ApiBearerAuth('JWT-auth')
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Atualizar autor' })
   @ApiResponse({ status: 200, description: 'Autor atualizado com sucesso' })
   update(@Param('id') id: string, @Body() updateAutorDto: UpdateAutorDto) {
     return this.autorService.update(+id, updateAutorDto);
   }
 
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  //@ApiBearerAuth('JWT-auth')
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Deletar autor' })
   @ApiResponse({ status: 200, description: 'Autor deletado com sucesso' })
   remove(@Param('id') id: string) {

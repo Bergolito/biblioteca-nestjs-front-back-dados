@@ -56,7 +56,13 @@ export class AutorService {
 
   async update(id: number, updateAutorDto: UpdateAutorDto): Promise<Autor> {
     const autor = await this.findOne(id);
-    Object.assign(autor, updateAutorDto);
+    console.log('>> Atualizando autor:', autor);
+
+    // Filtrar apenas os campos permitidos
+    const { nome, nacionalidade } = updateAutorDto;
+    const dadosAtualizados = { nome, nacionalidade };
+    
+    Object.assign(autor, dadosAtualizados);
     return await this.autorRepository.save(autor);
   }
 

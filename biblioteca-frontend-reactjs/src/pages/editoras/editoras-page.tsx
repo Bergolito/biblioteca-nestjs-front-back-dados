@@ -227,6 +227,7 @@ const EditorasPage: React.FC = () => {
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
       >
         <Alert severity={snackbar.severity} sx={{ width: '100%' }}>

@@ -132,12 +132,13 @@ const AutoresPage: React.FC = () => {
         await autorService.create(formData as Omit<Autor, 'id'>);
         showSnackbar('Autor criado com sucesso', 'success');
       } else if (dialogMode === 'edit' && selectedAutor) {
-        await autorService.update(selectedAutor.id, formData);
+        await autorService.update(selectedAutor.id, formData as Omit<Autor, 'livros'>);
         showSnackbar('Autor atualizado com sucesso', 'success');
       }
       setOpenDialog(false);
       loadAutores(filters);
     } catch (error) {
+      console.error('Erro ao salvar autor:', error);
       showSnackbar('Erro ao salvar autor', 'error');
     }
   };
@@ -243,9 +244,10 @@ const AutoresPage: React.FC = () => {
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
       >
-        <Alert severity={snackbar.severity} sx={{ width: '100%' }}>
+        <Alert severity={snackbar.severity}>
           {snackbar.message}
         </Alert>
       </Snackbar>
