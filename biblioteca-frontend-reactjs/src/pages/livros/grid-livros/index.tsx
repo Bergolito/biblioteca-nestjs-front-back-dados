@@ -16,6 +16,7 @@ import {
   Chip,
   Divider,
   Paper,
+  Pagination,
 } from '@mui/material';
 import { AutoStories, Visibility } from '@mui/icons-material';
 import { livroService } from '../../../services/livro-service';
@@ -23,12 +24,15 @@ import { Livro } from '../../../types/livro';
 import Loading from '../../../components/Loading';
 import ErrorMessage from '../../../components/ErrorMessage';
 
+const ITEMS_PER_PAGE = 12;
+
 const GridLivros: React.FC = () => {
   const [livros, setLivros] = useState<Livro[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedLivro, setSelectedLivro] = useState<Livro | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     loadLivros();
@@ -66,6 +70,17 @@ const GridLivros: React.FC = () => {
     setSelectedLivro(null);
   };
 
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Calcular itens da página atual
+  const totalPages = Math.ceil(livros.length / ITEMS_PER_PAGE);
+  const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const livrosPaginados = livros.slice(startIndex, endIndex);
+
   if (loading) {
     return <Loading />;
   }
@@ -85,10 +100,11 @@ const GridLivros: React.FC = () => {
 
       <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 3 }}>
         {livros.length} {livros.length === 1 ? 'livro encontrado' : 'livros encontrados'}
+        {totalPages > 1 && ` • Página ${page} de ${totalPages}`}
       </Typography>
 
       <Grid container spacing={3}>
-        {livros.map((livro) => (
+        {livrosPaginados.map((livro) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={livro.id}>
             <Card 
               sx={{ 
@@ -102,30 +118,35 @@ const GridLivros: React.FC = () => {
                 },
               }}
             >
-              <CardMedia
-                component="div"
-                sx={{
-                  height: 200,
-                  bgcolor: 'grey.200',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundImage: livro.imagem_id 
-                    ? `url(${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/imagens/${livro.imagem_id})`
-                    : 'none',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-              >
-                {!livro.imagem_id && (
-                  <AutoStories sx={{ fontSize: 80, color: 'grey.400' }} />
-                )}
-              </CardMedia>
+              <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}>
+                <CardMedia
+                  component="div"
+                  sx={{
+                    width: '100%',
+                    height: 280,
+                    bgcolor: 'grey.200',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundImage: `url(/assets/imagens-livros/${livro.id}.jpg)`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    borderRadius: 1,
+                  }}
+                >
+                  {!livro.imagem_id && (
+                    <AutoStories sx={{ fontSize: 80, color: 'grey.400' }} />
+                  )}
+                </CardMedia>
+              </Box>
               
-              <CardContent sx={{ flexGrow: 1 }}>
+              <Divider />
+              
+              <CardContent sx={{ pt: 2, pb: 1 }}>
                 <Typography 
                   gutterBottom 
-                  variant="h6" 
+                  variant="subtitle1" 
                   component="h2"
                   sx={{
                     overflow: 'hidden',
@@ -133,40 +154,27 @@ const GridLivros: React.FC = () => {
                     display: '-webkit-box',
                     WebkitLineClamp: 2,
                     WebkitBoxOrient: 'vertical',
-                    minHeight: '3.6em',
+                    minHeight: '2.8em',
+                    fontWeight: 600,
+                    fontSize: '0.95rem',
                   }}
                 >
                   {livro.titulo}
                 </Typography>
                 
-                {livro.subtitulo && (
-                  <Typography 
-                    variant="body2" 
-                    color="text.secondary"
-                    sx={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 1,
-                      WebkitBoxOrient: 'vertical',
-                      mb: 1,
-                    }}
-                  >
-                    {livro.subtitulo}
-                  </Typography>
-                )}
-                
-                <Typography variant="body2" color="primary" sx={{ fontWeight: 500, mt: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                   {livro.autor?.nome || 'Autor não informado'}
                 </Typography>
                 
-                {livro.ano && (
-                  <Chip 
-                    label={livro.ano} 
-                    size="small" 
-                    sx={{ mt: 1 }}
-                  />
-                )}
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  {livro.ano && (
+                    <Chip 
+                      label={livro.ano} 
+                      size="small" 
+                      sx={{ fontSize: '0.75rem' }}
+                    />
+                  )}
+                </Box>
               </CardContent>
               
               <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
@@ -184,6 +192,21 @@ const GridLivros: React.FC = () => {
           </Grid>
         ))}
       </Grid>
+
+      {/* Paginação */}
+      {totalPages > 1 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            color="primary"
+            size="large"
+            showFirstButton
+            showLastButton
+          />
+        </Box>
+      )}
 
       {livros.length === 0 && !loading && !error && (
         <Paper sx={{ p: 4, textAlign: 'center' }}>
@@ -220,9 +243,7 @@ const GridLivros: React.FC = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 1,
-                    backgroundImage: selectedLivro.imagem_id 
-                      ? `url(${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/imagens/${selectedLivro.imagem_id})`
-                      : 'none',
+                    backgroundImage: `url(/assets/imagens-livros/${selectedLivro.id}.jpg)`,                    
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
