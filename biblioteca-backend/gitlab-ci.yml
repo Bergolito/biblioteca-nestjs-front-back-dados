@@ -1,0 +1,28 @@
+image: node:latest
+
+#services:
+#  - mysql:latest
+#  - redis:latest
+#  - postgres:latest
+
+# This folder is cached between builds
+# https://docs.gitlab.com/ee/ci/yaml/#cache
+cache:
+  paths:
+    - node_modules/
+
+test_async:
+  script:
+    - npm install
+    #- node ./specs/start.js ./specs/async.spec.js
+    - node dist/main
+
+#test_db:
+#  script:
+#    - npm install
+#    - node ./specs/start.js ./specs/db-postgres.spec.js
+
+#deploy:
+#  stage: deploy
+#  script: echo "Define your deployment script!"
+#  environment: production
